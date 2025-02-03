@@ -1,6 +1,6 @@
 import dotenv from "dotenv"; // Carregar variáveis de ambiente
 import express from "express"; // Requisição do pacote express
-import { selectUsuarios } from "./bd.js"; // Importa o método selectUsuarios
+import { selectUsuarios } from "./db/index.js"; // Importa o método selectUsuarios
 
 dotenv.config(); // Carrega variáveis de ambiente do arquivo .env
 
@@ -33,7 +33,7 @@ app.listen(port, () => {
 });
 
 //index.js
-import { selectUsuarios, selectUsuario } from "./bd.js";
+import { selectUsuarios, selectUsuario } from "./db/index.js";
 
 //index.js
 app.get("/usuario/:id", async (req, res) => {
@@ -51,7 +51,7 @@ app.get("/usuario/:id", async (req, res) => {
 app.use(express.json());
 
 //index.js
-import { selectUsuarios, selectUsuario, insertUsuario } from "./bd.js";
+import { selectUsuarios, selectUsuario, insertUsuario } from "./db/index.js";
 
 //index.js
 app.post("/usuario", async (req, res) => {
@@ -65,7 +65,7 @@ app.post("/usuario", async (req, res) => {
 });
 
 //index.js
-import { selectUsuarios, selectUsuario, insertUsuario, deleteUsuario } from "./bd.js";
+import { selectUsuarios, selectUsuario, insertUsuario, deleteUsuario } from "./db/index.js";
 
 //index.js
 app.delete("/usuario/:id", async (req, res) => {
@@ -82,7 +82,7 @@ app.delete("/usuario/:id", async (req, res) => {
 });
 
 //index.js
-import { selectUsuarios, selectUsuario, insertUsuario, deleteUsuario, updateUsuario } from "./bd.js";
+import { selectUsuarios, selectUsuario, insertUsuario, deleteUsuario, updateUsuario } from "./db/index.js";
 
 //index.js
 app.put("/usuario/:id", async (req, res) => {
@@ -99,3 +99,20 @@ app.put("/usuario/:id", async (req, res) => {
     res.status(error.status || 500).json({ message: error.message || "Erro!" });
   }
 });
+
+//src/routes/usuario.js
+import { Router } from "express";
+
+//src/routes/usuario.js
+const router = Router();
+
+router.get("/usuario", async (req, res) => {
+  console.log(`Rota GET /usuarios solicitada pelo usuario ${req.userId}`);
+  try {
+    const usuarios = await selectUsuarios();
+    res.json(usuarios);
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message || "Erro!" });
+  }
+});
+export default router;
